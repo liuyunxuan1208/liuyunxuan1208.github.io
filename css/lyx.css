@@ -1,0 +1,36 @@
+#footer-wrap {
+    height: 90px;
+    box-shadow: var(--card-box-shadow);
+    border-radius: 18px 18px 0 0;
+    color: #0d0d0d; /* 更改字体颜色为深灰色 */
+    /*font-size: 20px; /* 更改字体大小为14像素 */
+    padding:40px 20px;
+    font-weight: 700;
+    /*color: var(--font-color);*/
+    position: relative;
+    text-align: center
+}
+
+
+#footer-wrap a {
+    color: var(--font-color)
+}
+
+#footer-wrap .icp-icon {
+    padding: 0 4px;
+    vertical-align: text-bottom;
+    max-height: 1.4em;
+    width: auto
+}
+/* 页脚半透明 */
+#footer {
+    background: rgba(255, 255, 255, 0);
+    color: #000;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    backdrop-filter: saturate(100%) blur(5px)
+}
+
+#footer::before {
+    background: rgba(255,255,255,0)
+}
