@@ -1,17 +1,19 @@
 #footer-wrap {
-    height: 90px;
+    /*height: 90px;*/
     box-shadow: var(--card-box-shadow);
     border-radius: 18px 18px 0 0;
     color: #0d0d0d; /* 更改字体颜色为深灰色 */
     /*font-size: 20px; /* 更改字体大小为14像素 */
-    padding:40px 20px;
+    padding:10px;
     font-weight: 700;
     /*color: var(--font-color);*/
     position: relative;
-    text-align: center
+    /*text-align: center*/
+    display: flex; /* 使用Flexbox布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    flex-direction: column; /* 默认为列方向，适合垂直堆叠 */
 }
-
-
 #footer-wrap a {
     color: var(--font-color)
 }
@@ -21,6 +23,11 @@
     vertical-align: text-bottom;
     max-height: 1.4em;
     width: auto
+}
+
+#footer-wrap #runtime {
+    display: inline-block;
+    margin-right: 10px;
 }
 /* 页脚半透明 */
 #footer {
