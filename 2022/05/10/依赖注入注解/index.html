@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>常用依赖注入注解 | 尘埃落定博客</title><meta name="author" content="liuyunxuan"><meta name="copyright" content="liuyunxuan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="常用依赖注入注解1.Map&amp;List注入 在上方我们定义了三个简单的类，People为接口，内部定义了一个返回String 字符串的方法，Student和Teacher实现了这个接口，并重写了这个方法。 1.People 123public interface People &#123;    String say();&#125;  2.Teacher 1234567@Service(&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用依赖注入注解">
+<meta property="og:url" content="https://liu-yunxuan.github.io/2022/05/10/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%B3%A8%E8%A7%A3/index.html">
+<meta property="og:site_name" content="尘埃落定博客">
+<meta property="og:description" content="常用依赖注入注解1.Map&amp;List注入 在上方我们定义了三个简单的类，People为接口，内部定义了一个返回String 字符串的方法，Student和Teacher实现了这个接口，并重写了这个方法。 1.People 123public interface People &#123;    String say();&#125;  2.Teacher 1234567@Service(&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liu-yunxuan.github.io/images/avatar.png">
+<meta property="article:published_time" content="2022-05-10T02:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-30T05:54:01.634Z">
+<meta property="article:author" content="liuyunxuan">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liu-yunxuan.github.io/images/avatar.png"><link rel="shortcut icon" href="/images/sheep.png"><link rel="canonical" href="https://liu-yunxuan.github.io/2022/05/10/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%B3%A8%E8%A7%A3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '常用依赖注入注解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-30 13:54:01'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/lyx.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/images/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/images/top.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="尘埃落定博客"><img class="site-icon" src="/images/sheep.png"/><span class="site-name">尘埃落定博客</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">常用依赖注入注解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-10T02:00:00.000Z" title="发表于 2022-05-10 10:00:00">2022-05-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-30T05:54:01.634Z" title="更新于 2024-08-30 13:54:01">2024-08-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="常用依赖注入注解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="常用依赖注入注解"><a href="#常用依赖注入注解" class="headerlink" title="常用依赖注入注解"></a>常用依赖注入注解</h1><h2 id="1-Map-List注入"><a href="#1-Map-List注入" class="headerlink" title="1.Map&amp;List注入"></a>1.Map&amp;List注入</h2><p><img src="/../img/SpringAnnotation/image-20240830105213863.png" alt="image-20240830105213863"></p>
+<p>在上方我们定义了三个简单的类，People为接口，内部定义了一个返回String 字符串的方法，Student和Teacher实现了这个接口，并重写了这个方法。</p>
+<p>1.People</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">People</span> &#123;</span><br><span class="line">    String <span class="title function_">say</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.Teacher</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;teacher&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Teacher</span> <span class="keyword">implements</span> <span class="title class_">People</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我是老师&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3.Student</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;student&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">People</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我是学生&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将这两个具体的实现类添加@Service注解交由Spring管理，并且指定具体的Bean名称。</p>
+<p>4.PeopleService</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PeopleService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;People&gt; peopleList;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, People&gt; peopleMap;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PeopleService</span><span class="params">(List&lt;People&gt; peopleList, Map&lt;String, People&gt; peopleMap)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.peopleList = peopleList;</span><br><span class="line">        <span class="built_in">this</span>.peopleMap = peopleMap;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">(String key)</span>&#123;</span><br><span class="line">        <span class="type">People</span> <span class="variable">people</span> <span class="operator">=</span> peopleMap.get(key);</span><br><span class="line"><span class="comment">//        People people = peopleList.get(0);</span></span><br><span class="line">        <span class="keyword">return</span> people.say();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在PeopleService类中分别使用Map和List进行注入，然后编写具体的业务方法say用来测试。</p>
+<p>5.SpringAnnotationApplicationTests</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SpringAnnotationApplicationTests</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> PeopleService peopleService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">say</span> <span class="operator">=</span> peopleService.say(<span class="string">&quot;teacher&quot;</span>);</span><br><span class="line">        System.out.println(say);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在测试类中我们通过Spring获取到PeopleService对象来调用具体方法，使用调试来启动项目。</p>
+<p><img src="/../img/SpringAnnotation/image-20240830110456327.png" alt="image-20240830110456327"></p>
+<p>在代码执行到从map集合中获取Bean对象时，我们发现所有实现了接口的对象都被成功注入到了Map和List集合中，但是由于数据结构的不同，list集合采用了数字作为索引，而map集合采用了bean对象的指定名称作为索引，完成了Bean对象的注入</p>
+<blockquote>
+<p>在实际的开发场景中，Map或者List集合注入可以避免大量的if…else…代码出现，当我们需要某一个服务只需要通过Map集合根据Bean对象的名字来获取对应的服务，使代码保持更加的优美。</p>
+</blockquote>
+<h2 id="2-空注入判断"><a href="#2-空注入判断" class="headerlink" title="2.空注入判断"></a>2.空注入判断</h2><p>如果现在Teacher并没有实现接口（也相当于没有提供服务），如果外部调用这个服务的话，肯定会报异常，</p>
+<p>这个时候我们可以采用@Autowired(required &#x3D; false)注解来实现这个场景。</p>
+<blockquote>
+<p>注意去掉Teacher类上的@Service注解（代表Teacher不提供服务）</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SpringAnnotationApplicationTests</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> PeopleService peopleService;</span><br><span class="line">    <span class="meta">@Autowired(required = false)</span></span><br><span class="line">    <span class="keyword">private</span> Teacher teacher;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">say</span> <span class="operator">=</span> peopleService.say(<span class="string">&quot;student&quot;</span>);</span><br><span class="line"><span class="comment">//        String say = teacher.say();</span></span><br><span class="line">        System.out.println(say);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../img/SpringAnnotation/image-20240830122418277.png" alt="image-20240830122418277"></p>
+<p>我们可以看到teacher对象并未注入，而编译过程也并未报错。</p>
+<blockquote>
+<p>在实际场景中，可能有的服务可能并未提供服务，这时候我们可以采用这个注解来实现不进行注入，避免空指针异常。</p>
+</blockquote>
+<h2 id="3-优先实例化-默认服务"><a href="#3-优先实例化-默认服务" class="headerlink" title="3.优先实例化(默认服务)"></a>3.优先实例化(默认服务)</h2><p>当一个接口有多个实现类时，我们在注入这个接口时会抛出异常，因为Spring并不知道去实例化哪个类。</p>
+<blockquote>
+<p>Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type ‘com.xynu.springannotation.people.People’ available: expected single matching bean but found 2: student,teacher</p>
+</blockquote>
+<p>这时我们就需要指定优先实例化的对象，这里我们采用@Primary注解来配置优先实例化的对象，@Order来处理加载对象的顺序。</p>
+<blockquote>
+<p>记得加上注解</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SpringAnnotationApplicationTests</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> PeopleService peopleService;</span><br><span class="line">    <span class="meta">@Autowired(required = false)</span></span><br><span class="line">    <span class="keyword">private</span> Teacher teacher;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> People people;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;</span><br><span class="line"><span class="comment">//        String say = peopleService.say(&quot;student&quot;);</span></span><br><span class="line"><span class="comment">//        String say = teacher.say();</span></span><br><span class="line"><span class="comment">//        System.out.println(say);</span></span><br><span class="line">        Class&lt;? <span class="keyword">extends</span> <span class="title class_">People</span>&gt; aClass = people.getClass();</span><br><span class="line">        System.out.println(aClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../img/SpringAnnotation/image-20240830124137106.png" alt="image-20240830124137106"></p>
+<p>这里我们配置Teacher为优先实例化的对象，Student对象作为首先加载的对象，可以看出两者的顺序，但是并不妨碍Teacher优先实例化。</p>
+<p><img src="/../img/SpringAnnotation/image-20240830124412211.png" alt="image-20240830124412211"></p>
+<h2 id="4-检测创建，避免重复"><a href="#4-检测创建，避免重复" class="headerlink" title="4.检测创建，避免重复"></a>4.检测创建，避免重复</h2><p>在实际的开发中，我们可能有多种服务来实现一个业务，但是我们可能只需要一个来完成业务，我们可以采用@ConditionalOnMissingBean注解来检测重复的创建,这里我们来添加一个配置类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PeopleConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(value = People.class, name = &quot;teacher&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> People <span class="title function_">defaultLogger</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Teacher</span>(); <span class="comment">// 默认使用Teacher</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@ConditionalOnMissingBean:</p>
+<ul>
+<li><code>value</code>: 指定要检查的 bean 类型。</li>
+<li><code>name</code>: 指定要检查的 bean 名称。</li>
+<li><code>annotation</code>: 指定要检查的 bean 是否具有某个注解。</li>
+<li><code>search</code>: 指定搜索范围 (<code>SEARCH_ALL</code> 或 <code>SEARCH_CHILD</code>)。</li>
+<li><code>type</code>: 指定要检查的 bean 类型（等同于 <code>value</code>）。</li>
+</ul>
+<blockquote>
+<p>使用这个注解可以判断服务的创建，并在没有Bean创建时创建默认的Bean对象</p>
+<p>注意：强烈建议仅在自动配置类上使用此注解</p>
+</blockquote>
+<h2 id="5-配置是否创建对象"><a href="#5-配置是否创建对象" class="headerlink" title="5.配置是否创建对象"></a>5.配置是否创建对象</h2><p>根据配置文件来选择是否创建对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConditionalOnProperty(value = &quot;myapp.enableFeature&quot;, havingValue = &quot;true&quot;, matchIfMissing = false)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FeatureConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> FeatureService <span class="title function_">featureService</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FeatureServiceImpl</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注解参数解释</p>
+<ul>
+<li><code>value</code>: 属性名。</li>
+<li><code>havingValue</code>: 如果属性值等于此值，则条件成立。</li>
+<li><code>matchIfMissing</code>: 如果属性不存在时是否认为条件成立。在上面的例子中设置为 <code>false</code>，表示如果 <code>sdk.config.enabled</code> 属性不存在，则 <code>createTopic</code> 方法不会被激活。</li>
+</ul>
+<blockquote>
+<p>将配置交由外部属性控制，在实际场景中，例如组件开发，需要启动关闭服务，配置业务属性，可以在外部配置文件中修改，而不需要去删除Pom文件中的内容。</p>
+</blockquote>
+<h2 id="6-根据环境配置实例化对象"><a href="#6-根据环境配置实例化对象" class="headerlink" title="6.根据环境配置实例化对象"></a>6.根据环境配置实例化对象</h2><p>在开发过程中，可能有些对象的创建与实例化十分的费时，那么我们就可以设置在开发过程中不去实例化这个对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service(&quot;student&quot;)</span></span><br><span class="line"><span class="meta">@Order(1)</span></span><br><span class="line"><span class="comment">//根据环境选择是否实例化</span></span><br><span class="line"><span class="meta">@Profile(&#123;&quot;prod&quot;, &quot;test&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Student</span> <span class="keyword">implements</span> <span class="title class_">People</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">say</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我是学生&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">SpringAnnotation</span></span><br><span class="line">  <span class="attr">profiles:</span></span><br><span class="line">    <span class="attr">active:</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="7-引入-Spring-配置"><a href="#7-引入-Spring-配置" class="headerlink" title="7.引入 Spring 配置"></a>7.引入 Spring 配置</h2><p>在过去的项目中可能还有使用xml来进行配置Bean对象的工程，我们暂时无法放弃，可以残采用注解来处理这种场景。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@ConfigurationPropertiesScan(&quot;com.xynu.springannotation&quot;)</span></span><br><span class="line"><span class="meta">@Configurable</span></span><br><span class="line"><span class="meta">@PropertySource(&quot;classpath:application.properties&quot;)</span></span><br><span class="line"><span class="meta">@ImportResource(&quot;classpath:spring.xml&quot;)</span></span><br><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringAnnotationApplication</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(SpringAnnotationApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="string"><span class="tag">                           http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;exampleBean&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.xynu.springannotation.entity.test&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="8-其他常用注解"><a href="#8-其他常用注解" class="headerlink" title="8.其他常用注解"></a>8.其他常用注解</h2><ul>
+<li><code>@EnableScheduling</code>：用于声明定时任务。</li>
+<li><code>@DependsOn(&#123;&quot;teacher&quot;, &quot;student&quot;&#125;)</code> Bean 对象实例化中，依赖于哪些对象。</li>
+<li><code>@Async</code> 异步方法注解，如：@Async public void asyncMethod() {…}</li>
+<li>还有许多的注解…</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://liu-yunxuan.github.io">liuyunxuan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://liu-yunxuan.github.io/2022/05/10/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%B3%A8%E8%A7%A3/">https://liu-yunxuan.github.io/2022/05/10/依赖注入注解/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://liu-yunxuan.github.io" target="_blank">尘埃落定博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java/">Java</a></div><div class="post_share"><div class="social-share" data-image="/images/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/05/10/Nginx/" title="Node.js安装"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Node.js安装</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/05/10/GUI/" title="GUI"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">GUI</div></div></a></div><div><a href="/2022/05/10/IDEA%E5%AE%89%E8%A3%85/" title="IDEA安装"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">IDEA安装</div></div></a></div><div><a href="/2022/05/10/IO%E6%B5%81/" title="IO流"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">IO流</div></div></a></div><div><a href="/2022/05/10/Java%E5%AE%89%E8%A3%85/" title="Java安装"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">Java安装</div></div></a></div><div><a href="/2022/05/10/Java%E9%9B%86%E5%90%88/" title="Java集合"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">Java集合</div></div></a></div><div><a href="/2022/05/10/Java%E5%B8%B8%E7%94%A8%E7%B1%BB/" title="Java常用类"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-10</div><div class="title">Java常用类</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/images/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">liuyunxuan</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/liu-yunxuan"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/liu-yunxuan" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yunxuanliu84@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">博客出现问题及时通过邮箱联系</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E6%B3%A8%E8%A7%A3"><span class="toc-text">常用依赖注入注解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Map-List%E6%B3%A8%E5%85%A5"><span class="toc-text">1.Map&amp;List注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A9%BA%E6%B3%A8%E5%85%A5%E5%88%A4%E6%96%AD"><span class="toc-text">2.空注入判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BC%98%E5%85%88%E5%AE%9E%E4%BE%8B%E5%8C%96-%E9%BB%98%E8%AE%A4%E6%9C%8D%E5%8A%A1"><span class="toc-text">3.优先实例化(默认服务)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%A3%80%E6%B5%8B%E5%88%9B%E5%BB%BA%EF%BC%8C%E9%81%BF%E5%85%8D%E9%87%8D%E5%A4%8D"><span class="toc-text">4.检测创建，避免重复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E9%85%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">5.配置是否创建对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%A0%B9%E6%8D%AE%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="toc-text">6.根据环境配置实例化对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%BC%95%E5%85%A5-Spring-%E9%85%8D%E7%BD%AE"><span class="toc-text">7.引入 Spring 配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="toc-text">8.其他常用注解</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/24/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85Git/" title="无题">无题</a><time datetime="2024-08-24T03:54:54.994Z" title="发表于 2024-08-24 11:54:54">2024-08-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/23/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="无题">无题</a><time datetime="2024-08-23T14:09:44.540Z" title="发表于 2024-08-23 22:09:44">2024-08-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/10/GUI/" title="GUI">GUI</a><time datetime="2022-05-10T02:00:00.000Z" title="发表于 2022-05-10 10:00:00">2022-05-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/10/IDEA%E5%AE%89%E8%A3%85/" title="IDEA安装">IDEA安装</a><time datetime="2022-05-10T02:00:00.000Z" title="发表于 2022-05-10 10:00:00">2022-05-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/10/IO%E6%B5%81/" title="IO流">IO流</a><time datetime="2022-05-10T02:00:00.000Z" title="发表于 2022-05-10 10:00:00">2022-05-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By liuyunxuan</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><span id="runtime"></span><br/> <a href="https://beian.mps.gov.cn/#/query/webSearch?code=61092802000133" rel="noreferrer" target="_blank"><img class="icp-icon" src="/images/beian.png"><span>陕公网安备61092802000133</span></a> | <a href="https://beian.miit.gov.cn" target="_blank"><span>陕ICP备2023020115号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="/js/tw_cn.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(()=>{
+  const getGiscusTheme = theme => {
+    return theme === 'dark' ? 'dark' : 'light'
+  }
+
+  const loadGiscus = () => {
+    const config = Object.assign({
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'liu-yunxuan/liu-yunxuan.github.io',
+      'data-repo-id': 'R_kgDOMlkdqA',
+      'data-category-id': 'DIC_kwDOMlkdqM4Chz4A',
+      'data-mapping': 'pathname',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true
+    },null)
+
+    const ele = document.createElement('script')
+    for (let key in config) {
+      ele.setAttribute(key, config[key])
+    }
+    document.getElementById('giscus-wrap').appendChild(ele)
+  }
+
+  const changeGiscusTheme = theme => {
+    const sendMessage = message => {
+      const iframe = document.querySelector('iframe.giscus-frame')
+      if (!iframe) return
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app')
+    }
+
+    sendMessage({
+      setConfig: {
+        theme: getGiscusTheme(theme)
+      }
+    });
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if ('Giscus' === 'Giscus' || !true) {
+    if (true) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment= loadGiscus
+  }
+})()</script></div><script src="/js/lyx.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
