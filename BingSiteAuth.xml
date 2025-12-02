@@ -1,0 +1,4 @@
+location = /BingSiteAuth.xml {
+    alias /var/www/html/bing/BingSiteAuth.xml;
+    log_not_found off;
+}
