@@ -1,4 +1,4 @@
-location = /BingSiteAuth.xml {
-    alias /var/www/html/bing/BingSiteAuth.xml;
-    log_not_found off;
-}
+<?xml version="1.0"?>
+<users>
+	<user>93CC2CDF1DBC06E5C3666FDF2DAB9353</user>
+</users>
